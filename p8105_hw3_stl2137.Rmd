@@ -1,0 +1,27 @@
+---
+title: "p8105_hw3_stl2137.Rmd"
+output: github_document
+---
+
+# Homework 3
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(viridis)
+```
+
+## Problem 1
+```{r}
+library(p8105.datasets)
+data("instacart")
+```
+To that end, write a short description of the dataset, noting the size and structure of the data, describing some key variables, and giving illstrative examples of observations.
+
+The instacart dataset is comprised of `r nrow(instacart)` observations and `r ncol(instacart)` variables. 
+
+```{r}
+aisle_count <- instacart %>% 
+  count(aisle) %>% 
+  arrange(desc(n))
+```
+There are a total of `count(aisle_count)` aisles, and the top 6 aisles where the most items are ordered from are fresh vegetables, fresh fruits, packaged vegetables fruits, yogurt, packcaged cheese, and water seltzer sparkling water. 
