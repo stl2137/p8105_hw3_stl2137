@@ -135,3 +135,9 @@ ggplot(brfss_ny, aes(x = response, y = data_value, group = interaction(response,
 
 ```
 
+## Problem 3
+
+```{r}
+accel_data <- read_csv("./hw3_data/accel_data.csv")
+```
+
