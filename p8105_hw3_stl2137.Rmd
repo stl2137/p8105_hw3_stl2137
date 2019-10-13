@@ -121,6 +121,17 @@ ggplot(brfss_excellent, aes(x = year, y = mean_data_value, group = locationabbr,
 Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
 
 ```{r}
+brfss_ny <- brfss_clean %>% 
+  filter(year %in% c(2006, 2010), 
+         locationabbr %in% "NY",
+        )   
+
+ggplot(brfss_ny, aes(x = response, y = data_value, group = interaction(response, locationdesc), fill = locationdesc)) +
+  geom_col(position = "dodge") + 
+  theme(legend.position = "bottom") +
+  facet_grid(.~year) +
+  scale_fill_viridis(discrete = TRUE)
+
 
 ```
 
