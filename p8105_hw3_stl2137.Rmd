@@ -88,18 +88,22 @@ In 2002, which states were observed at 7 or more locations? What about in 2010?
 ```{r}
 brfss_clean %>% 
   filter(year %in% 2002) %>% 
-  count(locationabbr) %>% 
-  arrange(desc(n)) %>% 
+  group_by(locationabbr) %>% 
+  summarise(
+    count = length(unique(locationdesc))
+  ) %>% 
   filter(
-    n > 7
+    count >= 7
   )
 
 brfss_clean %>% 
   filter(year %in% 2010) %>% 
-  count(locationabbr) %>% 
-  arrange(desc(n)) %>% 
+  group_by(locationabbr) %>% 
+  summarise(
+    count = length(unique(locationdesc))
+  ) %>% 
   filter(
-    n > 7
+    count >= 7
   )
 ```
 
@@ -139,5 +143,12 @@ ggplot(brfss_ny, aes(x = response, y = data_value, group = interaction(response,
 
 ```{r}
 accel_data <- read_csv("./hw3_data/accel_data.csv")
+
+accel_data_clean <- accel_data %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    day = as.factor(day) %>% relevel()
+  )
+
 ```
 
