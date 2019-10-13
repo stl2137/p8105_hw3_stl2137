@@ -114,7 +114,8 @@ brfss_excellent <- brfss_clean %>%
   ) %>% 
   select(year, locationabbr, mean_data_value)
   
-  
+ggplot(brfss_excellent, aes(x = year, y = mean_data_value, group = locationabbr, color = locationabbr)) +
+  geom_line() 
 ```
 
 Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
