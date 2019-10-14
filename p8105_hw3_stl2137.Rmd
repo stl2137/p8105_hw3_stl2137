@@ -182,7 +182,10 @@ ggplot(brfss_ny, aes(x = response, y = data_value, group = interaction(response,
 
 ```{r}
 accel_data <- read_csv("./hw3_data/accel_data.csv")
+```
 
+There are `r nrow(accel_data)` observations and `r ncol(accel_data)` variables. Each row observation represents a new day. The variables in the dataset include `week`, `day_id` (each day has a unique day_id), `day` (representing day of the week), and `activity.1:activity.1440` (representing each minute of the day). 
+```{r}
 accel_data_clean <- accel_data %>% 
   janitor::clean_names() %>% 
   mutate(
@@ -201,7 +204,7 @@ accel_data_clean <- accel_data %>%
   )
 ```
 
-Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
+### Create Table Showing Day Activity Total
 ```{r}
 total_activity_table <- accel_data_clean %>% 
   group_by(day_id) %>% 
@@ -210,12 +213,13 @@ total_activity_table <- accel_data_clean %>%
     day = unique(day)
   )
 ```
+* Looking at the table alone, there are no apparent trends. 
 
-Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
+### Single-panel plot that shows the 24-hour activity time courses for each day Describe in words any patterns or conclusions you can make based on this graph.
 
 ```{r}
 ggplot(accel_data_clean, aes(x = hour, y = activity_value, group = day_id, color = day)) +
   geom_line() +
   theme(legend.position = "bottom")
 ```
-
+* The patient appears to be more active from the 8 PM to midnight hours during the duration of the study. The patient is consistenly inactive from midnight to 5 AM. Between the hours of 5 AM to 5 PM, there are multiple spikes; on Sunday the patient appears to be most active from 10 AM to noon, and on Saturday, the patients appears to be more active from 4 PM to 5 PM. 
