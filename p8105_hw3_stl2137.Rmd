@@ -11,6 +11,14 @@ library(viridis)
 library(p8105.datasets)
 data("instacart")
 data("brfss_smart2010")
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
 ```
 
 ## Problem 1
@@ -104,7 +112,7 @@ Using this dataset, do or answer the following (commenting on the results of eac
 
 ### In 2002, which states were observed at 7 or more locations? What about in 2010?
 ```{r}
-brfss_clean %>% 
+brfss_2002 <- brfss_clean %>% 
   filter(year %in% 2002) %>% 
   group_by(locationabbr) %>% 
   summarise(
@@ -114,7 +122,7 @@ brfss_clean %>%
     count >= 7
   )
 
-brfss_clean %>% 
+brfss_2010 <- brfss_clean %>% 
   filter(year %in% 2010) %>% 
   group_by(locationabbr) %>% 
   summarise(
@@ -124,10 +132,12 @@ brfss_clean %>%
     count >= 7
   )
 ```
-In 2002, the following 6 states were observed at 7 or more locations: 
+* In 2002, the following `r nrow(brfss_2002)` states were observed at 7 or more locations: Connecticut (CT), Florida (FL), Massachusetts (MA), North Carolina (NC), New Jersey (NJ), and Pennsylvania (PA). 
+
+* In 2010, the following `r nrow(brfss_2010)` states were observed at 7 or more locations: California (CA), Colorado (CO), Florida (FL), Massachusetts (MA), Maryland (MD), North Carolina (NC), Nebraska (NE), New Jersey (NJ), New York (NY), Ohio (OH), Pennsylvania (PA), South Carolina (SC), Texas (TX), and Washington (WA). 
 
 
-Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
+### Spaghetti Plot
 
 ```{r}
 brfss_excellent <- brfss_clean %>%
@@ -139,10 +149,15 @@ brfss_excellent <- brfss_clean %>%
   select(year, locationabbr, mean_data_value)
   
 ggplot(brfss_excellent, aes(x = year, y = mean_data_value, group = locationabbr, color = locationabbr)) +
-  geom_line() 
+  geom_line() +
+  labs(
+    x = "Year",
+    y = "Average Value over Time"
+  )
 ```
+* This spaghetti plot is difficult to read, as there are 50 lines for each of the 50 states. 
 
-Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
+### Two-panel Plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
 
 ```{r}
 brfss_ny <- brfss_clean %>% 
@@ -152,12 +167,16 @@ brfss_ny <- brfss_clean %>%
 
 ggplot(brfss_ny, aes(x = response, y = data_value, group = interaction(response, locationdesc), fill = locationdesc)) +
   geom_col(position = "dodge") + 
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(
+    x = "Location by County",
+    y = "Data Value",
+    title = "Distribution of Data Value from Poor to Excellent"
+  ) +
   facet_grid(.~year) +
-  scale_fill_viridis(discrete = TRUE)
-
-
+  scale_fill_viridis(discrete = TRUE) 
 ```
+* More locations were added in additional New York counties in 2010. There also appear to have more "very good" reviews in 2010 compared to 2006 across all New York Counties. 
 
 ## Problem 3
 
