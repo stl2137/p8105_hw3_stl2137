@@ -41,6 +41,7 @@ instacart %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
+* Fresh fruits and fresh vegetables are ordered much more frequently than the rest of the products customers can order via Instacart. Packaged vegetables fruit are the 3rd most ordered product, and yogurt is the 4th most ordered product. 
 
 ### Table showing the three most popular items in the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
 ```{r}
@@ -51,6 +52,11 @@ instacart %>%
   arrange(desc(n)) %>% 
   top_n(n = 3)
 ```
+* The top three items in the "packaged vegetables fruits" aisle are Organize Baby Spinach (ordered 9784 times), Organic Raspberries (ordered 5546 times), and Organic Blueberries (ordered 4966 times). 
+
+* The top three items in the "baking ingredients" aisle are Light Brown Sugar (ordered 499 times), Pure Baking Soda (ordered 387 times), and Cane Sugar (ordered 336 times).
+
+* The top three items in the "dog food care" aisle are Snack Sticks Chicken & Rice Recipe Dog Treats (ordered 30 times), Organix Chicken & Brown Rice Recipe (ordered 28 times), and Small Dog Biscuits (ordered 26 times). 
 
 ### Table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
 
@@ -65,8 +71,22 @@ instacart %>%
     names_from = order_dow,
     values_from = mean_time
   ) 
-
 ```
+* Overall, Coffee Ice Cream is ordered later in the day compared to Pink Lady Apples. 
+
+* On Sunday, the mean hour of the day to order both Coffee Ice Cream and Pink Lady Apples is in the 1 PM hour. 
+
+* On Monday, the mean hour of the day to order Coffee Ice cream is in the 2 PM hour, and the mean hour of the day to order Pink Lady Apples is in the 11 AM hour. 
+
+* On Tuesday, the mean hour of the day to order Coffee Ice cream is in the 3 PM hour, and the mean hour of the day to order Pink Lady Apples is in the 11 AM hour.
+
+* On Wednesday, the mean hour of the day to order Coffee Ice cream is in the 3 PM hour, and the mean hour of the day to order Pink Lady Apples is in the 2 PM hour.
+
+* On Thursday, the mean hour of the day to order Coffee Ice cream is in the 3 PM hour, and the mean hour of the day to order Pink Lady Apples is in the 11 AM hour.
+
+* On Friday, the mean hour of the day to order both Coffee Ice Cream and Pink Lady Apples is in the 12 PM hour. 
+
+* On Saturday, the mean hour of the day to order Coffee Ice cream is in the 2 PM hour, and the mean hour of the day to order Pink Lady Apples is in the 11 AM hour.
 
 ## Problem 2
 
@@ -104,6 +124,8 @@ brfss_clean %>%
     count >= 7
   )
 ```
+In 2002, the following 6 states were observed at 7 or more locations: 
+
 
 Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
 
