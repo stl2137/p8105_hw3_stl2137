@@ -146,9 +146,21 @@ accel_data <- read_csv("./hw3_data/accel_data.csv")
 
 accel_data_clean <- accel_data %>% 
   janitor::clean_names() %>% 
+  group_by(day_id) %>% 
+  pivot_longer(
+    cols = -c(week, day, day_id),
+    names_to = "activity_minute",
+    values_to = "activity_value"
+  ) %>%
   mutate(
-    day = as.factor(day) %>% relevel()
+    weekend = ifelse(day %in% c("Saturday", "Sunday"), 1, 0),
+    minute = seq(n()),
+    hour = minute/60
   )
+```
+
+Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
+```{r}
 
 ```
 
