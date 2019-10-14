@@ -15,20 +15,16 @@ data("brfss_smart2010")
 
 ## Problem 1
 
-To that end, write a short description of the dataset, noting the size and structure of the data, describing some key variables, and giving illstrative examples of observations. (INCOMPLETE)
-
-The instacart dataset is comprised of `r nrow(instacart)` observations and `r ncol(instacart)` variables. 
-
-
+The instacart dataset is comprised of `r nrow(instacart)` observations and `r ncol(instacart)` variables. Key variables (in the context of this analysis) include `product_name`, which is the name of the product (for example: 96% Lean Ground Beef, 24 Carrot Gold Paleo Muffins, 2nd Foods Bananas); `aisle`, which is the name of the aisle a product comes from (for example: meat counter, breakfast bakery, baby food formula); `order_dow`, which is the day of the week on which the order was placed; and `order_hour_of_day`, which is the hour of the day on which the order was placed.  
 
 ```{r}
 aisle_count <- instacart %>% 
   count(aisle) %>% 
   arrange(desc(n))
 ```
-There are a total of `count(aisle_count)` aisles, and the top 6 aisles where the most items are ordered from are fresh vegetables, fresh fruits, packaged vegetables fruits, yogurt, packcaged cheese, and water seltzer sparkling water. 
+There are a total of `r nrow(aisle_count)` aisles, and the top 6 aisles where the most items are ordered from are fresh vegetables, fresh fruits, packaged vegetables fruits, yogurt, packcaged cheese, and water seltzer sparkling water. 
 
-Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+### Plot that shows Number of Items Ordered per Aisle
 ```{r}
 instacart %>% 
   select(aisle, department) %>% 
@@ -39,13 +35,14 @@ instacart %>%
   geom_col() +
   labs(
     x = "Name of Aisle",
-    y = "Number of Items Ordered"
+    y = "Number of Items Ordered",
+    title = "Number of Items Ordered per Aisle"
   ) + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
-Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+### Table showing the three most popular items in the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
 ```{r}
 instacart %>% 
   filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>% 
@@ -55,7 +52,7 @@ instacart %>%
   top_n(n = 3)
 ```
 
-Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table).
+### Table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
 
 ```{r}
 instacart %>%
@@ -73,6 +70,7 @@ instacart %>%
 
 ## Problem 2
 
+### Data Cleaning!
 ```{r}
 brfss_clean <- brfss_smart2010 %>% 
   janitor::clean_names() %>% 
@@ -84,7 +82,7 @@ brfss_clean <- brfss_smart2010 %>%
 
 Using this dataset, do or answer the following (commenting on the results of each):
 
-In 2002, which states were observed at 7 or more locations? What about in 2010?
+### In 2002, which states were observed at 7 or more locations? What about in 2010?
 ```{r}
 brfss_clean %>% 
   filter(year %in% 2002) %>% 
@@ -167,7 +165,16 @@ Using your tidied dataset, aggregate accross minutes to create a total activity 
 total_activity_table <- accel_data_clean %>% 
   group_by(day_id) %>% 
   summarise(
-    total_activity = sum(activity_value)
+    total_activity = sum(activity_value),
+    day = unique(day)
   )
+```
+
+Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
+
+```{r}
+ggplot(accel_data_clean, aes(x = hour, y = activity_value, group = day_id, color = day)) +
+  geom_line() +
+  theme(legend.position = "bottom")
 ```
 
